@@ -93,6 +93,7 @@
                 <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example" >
                     <thead>
                         <tr>
+                            <th style="text-align: center">number</th>
                             <th style="text-align: center">title</th>
                             <th style="text-align: center;">village</th>
                             <th style="text-align: center;">are</th>
@@ -117,6 +118,7 @@
                             <td>{{ i.ori }}</td>
                             <td>{{ i.info }}</td>
                             <td>{{ i.rent }}元</td>
+                            <td>{{ i.people }}</td>
                             <td>{{ i.dist|showplace }}</td>
                         </tr>
                     {% endfor %}
@@ -199,7 +201,7 @@ $(".selectpicker").selectpicker({
             },
             success:function (data) {
                 var result = "预测价格："+data+"元";
-                layer.msg(result);
+                layer.msg(result,{time: 10*1000});
                 console.log(result);
             }
         })
@@ -215,7 +217,7 @@ $(".selectpicker").selectpicker({
             },
             success:function (data) {
                 var result = "预测价格："+data+"元";
-                layer.msg(result)
+                layer.msg(result,{time: 10*1000})
             }
         })
     }
@@ -232,7 +234,7 @@ $(".selectpicker").selectpicker({
             },
             success:function (data) {
                 var result = "预测价格："+data+"元";
-                layer.msg(result)
+                layer.msg(result,{time: 10*1000})
             }
         })
     }
