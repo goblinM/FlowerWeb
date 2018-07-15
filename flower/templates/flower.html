@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>花瓣预测</title>
+    <link rel="stylesheet"  href="/static/vendor/bootstrap/bootstrap.min.css" />
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/bootstrap/boostrap.min.js"></script>
+    <script src="/static/vendor/layer/layer.js"></script>
+</head>
+<body>
+    <div class="container-fluid business-container" style="box-shadow: 0 0 3px #ccc;">
+        <div class="row">
+            <h5 class="title detail-title">花瓣预测<span class="text-muted title-text">FLOWER</span>
+            </h5>
+            <!--<button class="btn btn-default" data-toggle="modal" data-target="#FlowerModal" style="border-radius: 5px;">上传花瓣数据</button>-->
+            <input type="text" placeholder="请输入花瓣的宽" style="border-radius: 5px;" id="petalWidth"/>
+            <input type="text" placeholder="请输入花瓣的长" style="border-radius: 5px;" id="petalLength"/>
+            <input type="text" placeholder="请输入花萼的宽" style="border-radius: 5px;" id="sepalWidth"/>
+            <input type="text" placeholder="请输入花萼的长" style="border-radius: 5px;" id="sepalLength"/>
+            <button class="btn-default" style="border-radius: 5px;" onclick="uploadFlower()" id="SureFlower" data-val="False">确认</button>
+        </div>
+    </div>
+
+</body>
+<script>
+    window.flag = "";
+    function uploadFlower() {
+        window.flag = $("#SureFlower").attr("data-val");
+        if(window.flag == "True"){
+            $("#SureFlower").attr("disabled",ture);
+        }
+        var petalWidth = $("#petalWidth").val();
+        var petalLength = $("#petalLength").val();
+        var sepalWidth = $("#sepalWidth").val();
+        var sepalLength = $("#sepalLength").val();
+        if(petalWidth == "" && petalLength == "" && sepalWidth == "" && sepalHeight == "" ){
+            layer.msg("输入的值不能为空");
+            return false;
+        }
+        else{
+            $.ajax({
+            type:"POST",
+            url:"{% url 'flower' %}",
+            data:{
+                "petalWidth": petalWidth,
+                "petalLength": petalLength,
+                "sepalWidth": sepalWidth,
+                "sepalLength": sepalLength
+            },
+            success:function (data) {
+                layer.msg("hhahahhh");
+                window.flag = "True"
+                layer.msg(data)
+            }
+            })
+        }
+
+    }
+</script>
+</html>
