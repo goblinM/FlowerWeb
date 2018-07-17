@@ -20,3 +20,18 @@ def showplace(val):
     else:
         t = "雨花区"
     return t
+
+@register.filter(name="showTitle")
+def showTitle(val):
+    name = ""
+    if val == "daily_rtn":
+        name = "每日交易策略"
+    if val == "id_rtn":
+        name = "日间交易策略"
+    if val == "on_rtn":
+        name = "隔夜交易策略"
+    if val == "long_rtn":
+        name = "长期持有策略"
+    if val == "autoDe_rtn":
+        name = "自定义交易策略"
+    return name

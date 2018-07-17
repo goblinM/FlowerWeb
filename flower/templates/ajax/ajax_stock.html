@@ -1,0 +1,64 @@
+  <div class="row" style="width: 95%;margin: 20px auto;">
+                <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example" >
+                    <thead>
+                        <tr style="text-align: center;">
+                            <td>序号</td>
+                            <td>股票代码</td>
+                            <td>股票名字</td>
+                            <td>今日开盘价</td>
+                            <td>昨日收盘价</td>
+                            <td>当前价格</td>
+                            <td>今日最高价</td>
+                            <td>今日最低价</td>
+                            <td>竞买价</td>
+                            <td>竞卖价</td>
+                            <td>成交量</td>
+                            <td>成交金额（元）</td>
+                            <td>日期</td>
+                            <td>时间</td>
+                            <td>操作</td>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    {% for d in data %}
+                        <tr style="text-align: center;">
+                            <td>{{ forloop.counter }}</td>
+                            <td>{{ d.code }}</td>
+                            <td>{{ d.name }}</td>
+                            <td>{{ d.open }}</td>
+                            <td>{{ d.pre_close }}</td>
+                            <td>{{ d.price }}</td>
+                            <td>{{ d.high }}</td>
+                            <td>{{ d.low }}</td>
+                            <td>{{ d.bid }}</td>
+                            <td>{{ d.ask }}</td>
+                            <td>{{ d.volume }}</td>
+                            <td>{{ d.amount }}</td>
+                            <td>{{ d.date }}</td>
+                            <td>{{ d.time }}</td>
+                            <td>
+                                <button class="btn btn-default" onclick="showStockInfo('{{ d.code }}')">量化交易</button>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    {% if data|length == 0 %}
+                         <tr style="text-align: center;">
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td>--</td>
+                            <td></td>
+                    {% endif %}
+                    </tbody>
+                </table>
+  </div>

@@ -1,0 +1,75 @@
+{% load filter %}
+<div class="row" style="width: 95%;margin: 20px auto;">
+    <table width="100%" class="table table-striped table-bordered table-hover" id="dataTables-example">
+        <thead>
+        <tr style="text-align: center;">
+            <td>交易策略</td>
+            <td>交易次数</td>
+            <td>盈利次数</td>
+            <td>亏损次数</td>
+            <td>盈亏平衡次数</td>
+            <td>盈利亏损比例</td>
+            <td>盈利平均值</td>
+            <td>亏损平均值</td>
+            <td>平均收益</td>
+            <td>标准差</td>
+            <td>最大亏损</td>
+            <td>最大盈利</td>
+            <td>夏普比率</td>
+        </tr>
+        </thead>
+        <tbody>
+        <!--<tr>
+            <td>长期持有策略</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+
+        </tr>-->
+        {% for k,v in data.items %}
+        <tr>
+            <td>{{ k|showTitle }}</td>
+            <td>{{ v.cnt }}</td>
+            <td>{{ v.wins }}</td>
+            <td>{{ v.losses }}</td>
+            <td>{{ v.evens }}</td>
+            <td>{{ v.win_r }}</td>
+            <td>{{ v.mean_w }}</td>
+            <td>{{ v.mean_l }}</td>
+            <td>{{ v.mean_trd }}</td>
+            <td>{{ v.sd }}</td>
+            <td>{{ v.max_l }}</td>
+            <td>{{ v.max_w }}</td>
+            <td>{{ v.sharpe_r }}</td>
+        </tr>
+        {% endfor %}
+        <!--<tr>
+            <td>自定义交易策略</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+            <td>--</td>
+
+        </tr>-->
+
+        </tbody>
+    </table>
+
+</div>

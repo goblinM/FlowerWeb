@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>租房系统预测</title>
+    <link rel="stylesheet"  href="/static/vendor/bootstrap/bootstrap.min.css" />
+    <link href="/static/vendor/bootstrap-select/bootstrap-select.css" rel="stylesheet" >
+    <link href="/static/vendor/dataTables/dataTables.bootstrap.css" rel="stylesheet">
+    <link href="/static/vendor/dataTables/dataTables.responsive.css" rel="stylesheet">
+    <script src="/static/vendor/jquery/jquery.min.js"></script>
+    <script src="/static/vendor/jquery/jquery.dataTables.min.js"></script>
+    <script src="/static/vendor/bootstrap/boostrap.min.js"></script>
+    <script src="/static/vendor/bootstrap-select/bootstrap-select.js"></script>
+     <script src="/static/vendor/dataTables/dataTables.bootstrap.min.js"></script>
+    <script src="/static/vendor/dataTables/dataTables.responsive.js"></script>
+    <script src="/static/vendor/layer/layer.js"></script>
+</head>
+{% load filter %}
+<body style="width: 100%;height: 100%;background: ghostwhite;">
+ <div class="container-fluid business-container" style="background:transparent;width: 80%;margin: auto;">
+        <div class="row">
+            <h4 style="text-align: center;padding: 15px 0;">股票量化交易系统</h4>
+        </div>
+        <div class="row" style="text-align: center;margin: auto;">
+            <div class="col-lg-12">
+                <div class="col-lg-3">
+                </div>
+                <div class="col-lg-9">
+                    <div class="col-lg-6">
+                        <input id="stockCode" placeholder="请输入股票代码" class="form-control" style="width: 500px;"/>
+                    </div>
+                    <div class="col-lg-3">
+                        <button class="btn btn-default" onclick="addStock()" >增加股票</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="showStockInformation"></div>
+        <div id="showStockInformationtwo"></div>
+        <div id="showStockRealTimePens"></div>
+        <div id="showStockStrategy"></div>
+ </div>
+
+</body>
+<script>
+     $(document).ready(function() {
+        $('#dataTables-example').DataTable({
+            responsive: true
+        });
+    });
+     showStock()//首次进入
+    function showStock() {
+        $.ajax({
+            type:"POST",
+            url:"{% url 'showStock' %}",
+            data:{},
+            success:function (data) {
+                $("#showStockInformation").html(data);
+                window.setInterval("uploadStock()",5000)
+            }
+        })
+    }
+    function addStock() {
+        $("#showStockInformation").html("");
+        var stock = $("#stockCode").val();
+        $.ajax({
+            type:"POST",
+            url:"{% url 'addStock' %}",
+            data:{
+                "stock":stock
+            },
+            success:function (data) {
+                layer.msg("增加股票成功",{time:3*1000});
+                $("#showStockInformation").html(data);
+                $("#showStockInformationtwo").html("")
+                window.setInterval("uploadStock()",5000)
+            }
+        })
+    }
+
+    function uploadStock(){
+        $.ajax({
+            type:"POST",
+            url:"{% url 'uploadStock' %}",
+            data:{},
+            success:function (data) {
+                //layer.msg("增加股票成功",{time:3*1000});
+                $("#showStockInformation").html("")
+                $("#showStockInformationtwo").html(data)
+            }
+        })
+    }
+
+    function showStockInfo(code) {
+        $.ajax({
+            type:"POST",
+            url:"{% url 'showStockInfo' %}",
+            data:{
+                "code":code
+            },
+            success:function (data) {
+                $("#showStockRealTimePens").html(data)
+            }
+        })
+    }
+
+    function comparedData(code) {
+        $.ajax({
+            type:"POST",
+            url:"{% url 'comparedData' %}",
+            data:{
+                "code":code
+            },
+            success:function (data) {
+                $("#showStockStrategy").html(data)
+            }
+        })
+    }
+
+    function getInfoData(code){
+        console.log(code)
+
+        //layer.msg("开始获取数据！！！");
+        var startTime = $("#startDate").val();
+        var endTime = $("#endDate").val();
+        $.ajax({
+            type:"POST",
+            url:"{% url 'getInfoData' %}",
+            data:{
+                "startTime":startTime,
+                "endTime":endTime,
+                "code":code
+            },
+            success:function (data) {
+
+                //layer.msg("获取数据成功！！！",{time:3*1000});
+                $("#exportInfo").removeAttr("disabled");
+                $("#workingInfo").removeAttr("disabled");
+                //setTimeout($('#getInfo').click(),10000)
+            }
+        })
+    }
+
+    function exportInfoData() {
+        layer.msg("开始导出数据");
+        window.open("{% url 'exportInfoData'%}");
+        layer.msg("导出数据成功");
+    }
+
+    function workingInfoData() {
+        layer.msg("开始加工导出数据");
+        window.open("{% url 'workingInfoData'%}");
+        layer.msg("加工导出数据成功");
+        $("#foreInfo").removeAttr("disabled");
+        $("#strategyInfo").removeAttr("disabled");
+    }
+
+    function forecaseInfoData(code) {
+        layer.msg("开始预测数据",{time:3*1000});
+        $.ajax({
+            type:"POST",
+            url:"{% url 'forecaseInfoData' %}",
+            data:{
+                "code":code
+            },
+            success:function (data) {
+
+                result = "预测股票代码"+code+"今天的收盘价格："+data;
+                $("#closePrice").html(result)
+                //layer.msg(result,{time:5*1000});
+                //layer.msg("获取数据成功！！！",{time:3*1000});
+
+            }
+        })
+    }
+
+
+</script>
+</html>
